@@ -1,36 +1,26 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
-
 name: Gradle Package
 
 on:
   push:
-    branches: [ "**" ]
-  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  build:
-
+  release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pages: write
-      id-token: write
+      contents: write
       packages: write
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Set up JDK 26
       uses: actions/setup-java@v4
       with:
         java-version: '26'
         distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        server-id: github
+        settings-path: ${{ github.workspace }}
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -41,7 +31,32 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
+    - name: Read version
+      id: version
+      run: |
+        VERSION=$(grep '^mod_version=' gradle.properties | cut -d= -f2)
+        echo "version=v$VERSION" >> "$GITHUB_OUTPUT"
+
+    - name: Create Tag
+      run: |
+        git tag ${{ steps.version.outputs.version }}
+        git push origin ${{ steps.version.outputs.version }}
+
+    - name: Find mod jar
+      id: find-jar
+      run: |
+        JAR=$(ls ./build/libs/ranmclogin-*.jar | grep -v sources | grep -v dev | head -1)
+        echo "jar=$JAR" >> "$GITHUB_OUTPUT"
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        path: './build/libs'
+        name: build-artifacts
+        path: ${{ steps.find-jar.outputs.jar }}
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        files: ${{ steps.find-jar.outputs.jar }}
+        generate_release_notes: true
