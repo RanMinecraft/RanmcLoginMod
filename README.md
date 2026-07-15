@@ -19,7 +19,7 @@
 
 ## 🔧 安装方法
 
-1. 从 [Releases](https://github.com/FabricMC/fabric-example-mod/releases) 下载最新版本的 `RanmcLogin` jar 文件
+1. 从 [Releases](https://github.com/RanMinecraft/RanmcLoginMod/releases) 下载最新版本的 `RanmcLogin` jar 文件
 2. 将 jar 文件放入 Minecraft 的 `mods` 文件夹
 3. 确保 `fabric-api` 也已安装在 `mods` 文件夹中
 4. 启动游戏，模组会自动生成配置文件
