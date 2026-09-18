@@ -45,7 +45,7 @@ public class RanmcLoginClient implements ClientModInitializer {
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (shouldSendLogin && client.player != null) {
-				if (client.player.isDeadOrDying() && client.screen instanceof DeathScreen) {
+				if (client.player.isDeadOrDying() && client.gui.screen() instanceof DeathScreen) {
 					client.player.respawn();
 				} else {
 					tickCounter++;
