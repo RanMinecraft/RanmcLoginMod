@@ -12,9 +12,9 @@
 
 ## 📥 安装要求
 
-- **Minecraft**: 26.1.1
-- **Fabric Loader**: ≥ 0.18.6
-- **Fabric API**: ≥ 0.145.3+26.1.1
+- **Minecraft**: 26.3
+- **Fabric Loader**: ≥ 0.19.5
+- **Fabric API**: ≥ 0.160.7+26.3
 - **Java**: ≥ 26
 
 ## 🔧 安装方法
