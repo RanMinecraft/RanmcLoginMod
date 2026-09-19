@@ -49,16 +49,16 @@ public class RanmcLoginClient implements ClientModInitializer {
 					client.player.respawn();
 				} else {
 					tickCounter++;
-					if (tickCounter == 10) {
+					if (tickCounter == 20) {
 						String playerName = client.player.getName().getString();
 						if (pwdMap.containsKey(playerName)) {
 							client.player.connection.sendCommand("l " + pwdMap.get(playerName));
 						}
-					} else if (tickCounter == 15) {
+					} else if (tickCounter == 25) {
 						if (client.player.gameMode() != GameType.CREATIVE) {
 							client.player.connection.sendCommand("g 1");
 						}
-					} else if (tickCounter == 20) {
+					} else if (tickCounter == 30) {
 						client.player.connection.sendCommand("tps");
 						tickCounter = 0;
 						shouldSendLogin = false;
